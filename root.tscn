@@ -1,0 +1,161 @@
+[gd_scene load_steps=11 format=3 uid="uid://cwwunuxbqqdbq"]
+
+[ext_resource type="Script" path="res://Net/Server.gd" id="1_m1u8g"]
+[ext_resource type="PackedScene" uid="uid://mlermoufqlqd" path="res://Gameplay/Player/player.tscn" id="2_syin8"]
+[ext_resource type="Script" path="res://PlayerSpawner.gd" id="3_ddx22"]
+[ext_resource type="Texture2D" uid="uid://tpxvkguamwcn" path="res://icon.png" id="4_oag1l"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eonlv"]
+
+[sub_resource type="Sky" id="Sky_mx5an"]
+sky_material = SubResource( "PhysicalSkyMaterial_eonlv" )
+
+[sub_resource type="Environment" id="Environment_afeeq"]
+background_mode = 2
+sky = SubResource( "Sky_mx5an" )
+tonemap_mode = 3
+auto_exposure_enabled = true
+auto_exposure_scale = 0.42
+ssao_enabled = true
+sdfgi_read_sky_light = true
+sdfgi_bounce_feedback = 1.0
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cx72v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jqhfw"]
+albedo_texture = ExtResource( "4_oag1l" )
+roughness = 0.85
+roughness_texture = ExtResource( "4_oag1l" )
+roughness_texture_channel = 4
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_y1ji3"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[node name="Root" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.528438, -0.735231, 0.424486, 0, 0.5, 0.866025, -0.848972, 0.457641, -0.264219, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( "Environment_afeeq" )
+
+[node name="Server" type="Node" parent="."]
+script = ExtResource( "1_m1u8g" )
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="Server"]
+replication = [ExtResource( "2_syin8" )]
+spawn_path = NodePath("../../Players")
+spawn_limit = 10
+auto_spawn = true
+script = ExtResource( "3_ddx22" )
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="Panel" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 1016.0
+offset_bottom = 592.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NetworkTabs" type="TabContainer" parent="Panel/VBoxContainer"]
+offset_right = 1008.0
+offset_bottom = 549.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Connect" type="VBoxContainer" parent="Panel/VBoxContainer/NetworkTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 31.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ServerList" type="ItemList" parent="Panel/VBoxContainer/NetworkTabs/Connect"]
+offset_right = 1008.0
+offset_bottom = 483.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/NetworkTabs/Connect"]
+offset_top = 487.0
+offset_right = 1008.0
+offset_bottom = 518.0
+size_flags_horizontal = 3
+
+[node name="ServerLineEdit" type="LineEdit" parent="Panel/VBoxContainer/NetworkTabs/Connect/HBoxContainer"]
+offset_right = 803.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+text = "localhost"
+placeholder_text = "Server IP"
+
+[node name="PortLineEdit" type="LineEdit" parent="Panel/VBoxContainer/NetworkTabs/Connect/HBoxContainer"]
+offset_left = 807.0
+offset_right = 1008.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+text = "4242"
+placeholder_text = "Port"
+
+[node name="Host" type="VBoxContainer" parent="Panel/VBoxContainer/NetworkTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 31.0
+size_flags_horizontal = 3
+
+[node name="PortLineEdit" type="LineEdit" parent="Panel/VBoxContainer/NetworkTabs/Host"]
+offset_right = 1008.0
+offset_bottom = 31.0
+text = "4242"
+placeholder_text = "Port"
+
+[node name="PublishCheckBox" type="CheckBox" parent="Panel/VBoxContainer/NetworkTabs/Host"]
+offset_top = 35.0
+offset_right = 1008.0
+offset_bottom = 66.0
+text = "Publish to Server List"
+
+[node name="ConnectButton" type="Button" parent="Panel/VBoxContainer"]
+offset_top = 553.0
+offset_right = 1008.0
+offset_bottom = 584.0
+text = "Start"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(38.69, 0, 0, 0, 1, 0, 0, 0, 40.32, 0, -5, 0)
+mesh = SubResource( "PlaneMesh_cx72v" )
+surface_material_override/0 = SubResource( "StandardMaterial3D_jqhfw" )
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="42580" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_y1ji3" )
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.70169, 15.2631, 31.0713)
+
+[connection signal="pressed" from="Panel/VBoxContainer/ConnectButton" to="Server" method="_on_connect_button_pressed"]

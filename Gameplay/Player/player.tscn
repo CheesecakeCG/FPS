@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://mlermoufqlqd"]
+
+[ext_resource type="Script" path="res://Gameplay/Player/Player.gd" id="1_jp5vn"]
+[ext_resource type="Script" path="res://Gameplay/Player/PlayerCamera3D.gd" id="2_3rl0r"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_irwcx"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_h0xu0"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pt14f"]
+height = 1.276
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_d040q"]
+properties/0/path = NodePath(":position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath(":motion_velocity")
+properties/1/spawn = true
+properties/1/sync = true
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource( "1_jp5vn" )
+camera_path = NodePath("Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource( "CapsuleShape3D_irwcx" )
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0.115041, 0.496979, 0.142699)
+script = ExtResource( "2_3rl0r" )
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(0.172521, 3.01645e-08, 0, 0, 0, 0.0168356, 3.01645e-08, -0.172521, 0, -7.45058e-09, 0, -0.0610896)
+mesh = SubResource( "PrismMesh_h0xu0" )
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(-7.54112e-09, 3.01645e-08, 0.0168356, -0.172521, 0, -7.35905e-10, -1.31853e-15, -0.172521, 2.94362e-09, -7.45058e-09, 0, -0.0610896)
+mesh = SubResource( "PrismMesh_h0xu0" )
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+mesh = SubResource( "CapsuleMesh_pt14f" )
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath("..")
+resource = SubResource( "SceneReplicationConfig_d040q" )

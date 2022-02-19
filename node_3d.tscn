@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cx6ieapemt0f2"]
+
+[ext_resource type="Texture2D" uid="uid://tpxvkguamwcn" path="res://icon.png" id="2_7np65"]
+[ext_resource type="PackedScene" uid="uid://mlermoufqlqd" path="res://Gameplay/Player/player.tscn" id="2_qefef"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7xjpk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uxsn6"]
+albedo_texture = ExtResource( "2_7np65" )
+roughness = 0.85
+roughness_texture = ExtResource( "2_7np65" )
+roughness_texture_channel = 4
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_j4yup"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource( "2_qefef" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.82588, 2.32441, 1.16175)
+
+[node name="Camera3D" parent="Player" index="1"]
+current = true
+near = 0.111
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(38.69, 0, 0, 0, 1, 0, 0, 0, 40.32, 0, 0, 0)
+mesh = SubResource( "PlaneMesh_7xjpk" )
+surface_material_override/0 = SubResource( "StandardMaterial3D_uxsn6" )
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="@@42580" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_j4yup" )
+
+[editable path="Player"]

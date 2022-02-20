@@ -44,6 +44,7 @@ func create_player(id):
 func destroy_player(id):
 	# Delete this peer's nodes.
 #	get_tree().get_node(str(id)).queue_free()
+	print(OS.get_process_id(), ' Player left: ', str(id))
 	for n in get_tree().get_nodes_in_group("net_id_"+str(id)): 
 		n.queue_free()
 

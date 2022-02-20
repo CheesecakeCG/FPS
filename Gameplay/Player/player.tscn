@@ -17,6 +17,12 @@ properties/0/sync = true
 properties/1/path = NodePath(":motion_velocity")
 properties/1/spawn = true
 properties/1/sync = true
+properties/2/path = NodePath(":input_frame")
+properties/2/spawn = true
+properties/2/sync = true
+properties/3/path = NodePath("../Camera3D:rotation:y")
+properties/3/spawn = true
+properties/3/sync = true
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource( "1_jp5vn" )

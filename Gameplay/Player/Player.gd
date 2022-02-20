@@ -59,8 +59,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 func is_local_authority() -> bool:
 	if force_offline_mode:
 		return true
+#	assert(get_multiplayer_authority() == multiplayer.get_unique_id())
+#	assert($MultiplayerSynchronizer.get_multiplayer_authority() == get_multiplayer_authority())
 	return is_multiplayer_authority()
-	return get_multiplayer_authority() == multiplayer.get_unique_id()
 
 func _ready():
 	input_frame = PlayerInputFrame.new().serialize()
@@ -74,7 +75,8 @@ func _ready():
 func _input(event: InputEvent) -> void:
 	if not is_local_authority():
 		return
-	var pif : PlayerInputFrame = PlayerInputFrame.deserialize(input_frame)
+#	var pif : PlayerInputFrame = PlayerInputFrame.deserialize(input_frame)
+	var pif : PlayerInputFrame = PlayerInputFrame.new()
 	
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		pif.mouse = event.relative * MOUSE_SENSITIVITY
@@ -90,15 +92,12 @@ func _input(event: InputEvent) -> void:
 	local_pif = pif
 	input_frame = pif.serialize()
 	
-	
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-
-	
 func _physics_process(delta):
 	var pif : PlayerInputFrame
 	if is_local_authority():
@@ -111,13 +110,13 @@ func _physics_process(delta):
 		camera.rotation.x = clamp(camera.rotation.x, -1.4, 1.4)
 	
 	if pif == null:
-			move_and_slide()
-			return
+		printerr(OS.get_process_id(), " PIF is null!!: ", get_multiplayer_authority())
+		move_and_slide()
+		return
 	var dir2 = pif.dir
 	var dir : Vector3 = Vector3(dir2.x, 0, dir2.y)
 	
 
-	
 	var global_dir = dir.rotated(global_transform.basis.y, global_transform.basis.get_euler().y)
 	var planer_vel = motion_velocity
 	planer_vel.y = 0

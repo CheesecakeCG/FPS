@@ -60,5 +60,5 @@ func _on_connect_button_pressed():
 		print(OS.get_process_id(), ': connect failed... ', err)
 		OS.alert("Failed to start networking, error code " + str(err), "Fail to connect!")
 		return
-	print(OS.get_process_id(), ': Connected!')
+	print(OS.get_process_id(), ': Connected! ID: ', multiplayer.get_unique_id())
 	$"../Panel".hide()

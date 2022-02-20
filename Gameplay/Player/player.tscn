@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://mlermoufqlqd"]
+[gd_scene load_steps=8 format=3 uid="uid://mlermoufqlqd"]
 
 [ext_resource type="Script" path="res://Gameplay/Player/Player.gd" id="1_jp5vn"]
 [ext_resource type="Script" path="res://Gameplay/Player/PlayerCamera3D.gd" id="2_3rl0r"]
@@ -7,10 +7,15 @@
 
 [sub_resource type="PrismMesh" id="PrismMesh_h0xu0"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tveie"]
+properties/0/path = NodePath(":rotation")
+properties/0/spawn = true
+properties/0/sync = true
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pt14f"]
 height = 1.276
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_d040q"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2x5q3"]
 properties/0/path = NodePath(":position")
 properties/0/spawn = true
 properties/0/sync = true
@@ -20,7 +25,7 @@ properties/1/sync = true
 properties/2/path = NodePath(":input_frame")
 properties/2/spawn = true
 properties/2/sync = true
-properties/3/path = NodePath("../Camera3D:rotation:y")
+properties/3/path = NodePath(":rotation")
 properties/3/spawn = true
 properties/3/sync = true
 
@@ -32,7 +37,7 @@ camera_path = NodePath("Camera3D")
 shape = SubResource( "CapsuleShape3D_irwcx" )
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0.115041, 0.496979, 0.142699)
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0, 0.497, 0)
 script = ExtResource( "2_3rl0r" )
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
@@ -43,10 +48,14 @@ mesh = SubResource( "PrismMesh_h0xu0" )
 transform = Transform3D(-7.54112e-09, 3.01645e-08, 0.0168356, -0.172521, 0, -7.35905e-10, -1.31853e-15, -0.172521, 2.94362e-09, -7.45058e-09, 0, -0.0610896)
 mesh = SubResource( "PrismMesh_h0xu0" )
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Camera3D"]
+root_path = NodePath("..")
+resource = SubResource( "SceneReplicationConfig_tveie" )
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 mesh = SubResource( "CapsuleMesh_pt14f" )
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 root_path = NodePath("..")
-resource = SubResource( "SceneReplicationConfig_d040q" )
+resource = SubResource( "SceneReplicationConfig_2x5q3" )

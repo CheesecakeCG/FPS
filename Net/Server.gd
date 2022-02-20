@@ -8,6 +8,7 @@ const def_server_port : int = 4242
 func _ready():
 	# Start the server if Godot is passed the "--server" argument,
 	# and start a client otherwise.
+	print(OS.get_process_id(), ': application started')
 	if "--server" in OS.get_cmdline_args():
 		start_network(true)
 	DisplayServer.window_set_title(str(OS.get_process_id()))
@@ -36,10 +37,6 @@ func start_network(server: bool, server_ip : String = def_server_ip, server_port
 func create_player(id):
 	# Instantiate a new player for this client.
 	var p = $PlayerSpawner.spawn(id)
-#	var p = preload("res://Gameplay/Player/player.tscn").instantiate()
-#	p.set_meta("net_id_owner", id)
-#	p.add_to_group("net_id_"+str(id))
-#	$"../Players".add_child(p, true)
 
 func destroy_player(id):
 	# Delete this peer's nodes.
@@ -56,10 +53,12 @@ func _on_connect_button_pressed():
 		port = $"../Panel/VBoxContainer/NetworkTabs/Host/PortLineEdit".text.to_int()
 	else:
 		port = $"../Panel/VBoxContainer/NetworkTabs/Connect/HBoxContainer/PortLineEdit".text.to_int()
-	
+
 	var err = start_network(should_host, ip, port)
+	print(OS.get_process_id(), ': connecting...')
 	if err != OK:
+		print(OS.get_process_id(), ': connect failed... ', err)
 		OS.alert("Failed to start networking, error code " + str(err), "Fail to connect!")
 		return
-		
+	print(OS.get_process_id(), ': Connected!')
 	$"../Panel".hide()

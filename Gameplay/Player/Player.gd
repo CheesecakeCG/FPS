@@ -14,7 +14,6 @@ const JUMP_VELOCITY = 4.5
 @onready var camera = get_node(camera_path) as Camera3D
 
 var MOUSE_SENSITIVITY = -0.1
-var _velocity : Vector3 = Vector3()
 var time : float = 0
 var land_speed : float = 0
 
@@ -58,14 +57,13 @@ class PlayerInputFrame:
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func is_local_authority() -> bool:
-	var empty_pif : PlayerInputFrame
-	input_frame = PlayerInputFrame.new().serialize()
 	if force_offline_mode:
 		return true
 	return is_multiplayer_authority()
 	return get_multiplayer_authority() == multiplayer.get_unique_id()
 
 func _ready():
+	input_frame = PlayerInputFrame.new().serialize()
 	if is_local_authority():
 		camera.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

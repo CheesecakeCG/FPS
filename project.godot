@@ -61,4 +61,7 @@ player_run={
 [rendering]
 
 scaling_3d/mode=1
-scaling_3d/scale=0.7
+scaling_3d/scale=0.79
+scaling_3d/fsr_sharpness=2.0
+anti_aliasing/quality/msaa=1
+anti_aliasing/quality/screen_space_aa=1

@@ -17,7 +17,6 @@ tonemap_mode = 3
 auto_exposure_enabled = true
 auto_exposure_scale = 0.42
 ssao_enabled = true
-sdfgi_read_sky_light = true
 sdfgi_bounce_feedback = 1.0
 glow_enabled = true
 

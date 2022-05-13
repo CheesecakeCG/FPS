@@ -68,8 +68,11 @@ func _ready():
 	if is_local_authority():
 		camera.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		set_multiplayer_authority(get_multiplayer_authority(), true)
 		print(OS.get_process_id(), " Local Player Ready: ", get_multiplayer_authority())
+		print(OS.get_process_id(), " -> In groups: ", self.get_groups())
 	else:
+		set_multiplayer_authority(get_multiplayer_authority(), true)
 		print(OS.get_process_id(), " Remote Player Ready: ", get_multiplayer_authority())
 
 func _input(event: InputEvent) -> void:

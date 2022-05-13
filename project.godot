@@ -8,6 +8,16 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "Node3D",
+"class": &"PlayerTool",
+"language": &"GDScript",
+"path": "res://Gameplay/Tools/BaseTool/PlayerTool.gd"
+}]
+_global_script_class_icons={
+"PlayerTool": ""
+}
+
 [application]
 
 config/name="FPS"

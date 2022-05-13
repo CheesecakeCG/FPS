@@ -6,8 +6,8 @@ func _spawn_custom(data: Variant) -> Object:
 
 	var p = replication[0].instantiate()
 	p.add_to_group("net_id_"+str(data))
-	p.set_multiplayer_authority(data)
-	p.propagate_call("set_multiplayer_authority", [data])
+	p.set_multiplayer_authority(data, true)
+
 	
 #	get_node(spawn_path).add_child(p, true)
 	return p

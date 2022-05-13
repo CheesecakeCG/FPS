@@ -30,13 +30,14 @@ func start_network(server: bool, server_ip : String = def_server_ip, server_port
 			return err
 	
 	multiplayer.set_multiplayer_peer(peer)
+	multiplayer.server_disconnected.connect(_on_disconnect)
 	if server:
 		create_player(1)
 	return OK
 
 func create_player(id):
 	# Instantiate a new player for this client.
-	var p = $PlayerSpawner.spawn(id)
+	$PlayerSpawner.spawn(id)
 
 func destroy_player(id):
 	# Delete this peer's nodes.
@@ -44,6 +45,9 @@ func destroy_player(id):
 	print(OS.get_process_id(), ' Player left: ', str(id))
 	for n in get_tree().get_nodes_in_group("net_id_"+str(id)): 
 		n.queue_free()
+
+func _on_disconnect():
+	$"../Panel".show()
 
 func _on_connect_button_pressed():
 	var should_host : bool = $"../Panel/VBoxContainer/NetworkTabs".current_tab == 1
